@@ -51,7 +51,7 @@ do local _ = {
     "set_type",
     "server",
     "voice",
-    "supergroup
+    "supergroup"
   },
   moderation = {
     data = "data/moderation.json"
