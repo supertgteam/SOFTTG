@@ -1,92 +1,51 @@
 
+antienglish = {}-- An empty table for solving multiple kicking problem
+
+do
 local function run(msg, matches)
 if msg.to.type == 'chat' then
-    if is_momod(msg) then
+  if is_momod(msg) then -- Ignore mods,owner,admins
+    return
+  end
+  local data = load_data(_config.moderation.data)
+  if data[tostring(msg.to.id)]['settings']['lock_eng'] then
+    if data[tostring(msg.to.id)]['settings']['lock_eng'] == 'yes' then
+      if antienglish[msg.from.id] == true then 
         return
+      end
+      send_large_msg("chat#id".. msg.to.id , "⛔️ حروف انگلیسی مجاز نمیباشد.")
+      local name = user_print_name(msg.from)
+      savelog(msg.to.id, name.." ["..msg.from.id.."] kicked (english was locked) ")
+      chat_del_user('chat#id'..msg.to.id,'user#id'..msg.from.id,ok_cb,false)
+		  antienglish[msg.from.id] = true
+      return
     end
-    local data = load_data(_config.moderation.data)
-    if data[tostring(msg.to.id)] then
-        if data[tostring(msg.to.id)]['settings'] then
-            if data[tostring(msg.to.id)]['settings']['lock_eng'] then
-                lock_eng = data[tostring(msg.to.id)]['settings']['lock_eng']
-            end
-        end
-    end
-    local chat = get_receiver(msg)
-    local user = "user#id"..msg.from.id
-    if lock_eng == "yes" then
-        send_large_msg(chat, 'English Is not Allow Here !')
-        chat_del_user(chat, user, ok_cb, true)
-    end
+  end
+  return
 end
- end
+end
+local function cron()
+  antienglish = {} -- Clear antienglish table 
+end
 return {
-    usage ={
-        "lock adds: If User Send A Link Then Removed From Bot.",
-        "unlock adds: Adds Is Enabled.",
-        },
   patterns = {
     "(a)",
-    "(b)",
-    "(c)",
-    "(d)",
-    "(e)",
-    "(f)",
-    "(g)",
-    "(h)",
-    "(i)",
-    "(j)",
-    "(k)",
-    "(l)",
-    "(m)",
-    "(n)",
-    "(o)",
-    "(p)",
-    "(q)",
-    "(r)",
-    "(s)",
-    "(t)",
-    "(u)",
-    "(v)",
-    "(w)",
-    "(x)",
-    "(y)",
-    "(z)",
-  },
-  run = run
+	"(o)",
+	"(l)",
+	"(A)",
+	"(O)",
+	"(L)",
+	"(M)",
+	"(e)",
+	"(E)",
+	"(i)",
+	"(I)",
+	"(u)",
+	"(U)",
+	"(m)"
+    },
+  run = run,
+	cron = cron
 }
 
-
-
-
---  -_-_-_-_-_-_-_-_-_-   ||-_-_-_-_-_   ||             ||-_-_-_-_-_
---           ||           ||             ||             ||
---           ||           ||             ||             ||
---           ||           ||             ||             ||
---           ||           ||-_-_-_-_-_   ||             ||-_-_-_-_-_
---           ||           ||             ||             ||
---           ||           ||             ||             ||
---           ||           ||             ||             ||
---           ||           ||-_-_-_-_-_   ||-_-_-_-_-_   ||-_-_-_-_-_
---
---
---                               /\                              /\             /-_-_-_-_-_    ||-_-_-_-_-_   ||-_-_-_-_-_
---  ||\\            //||        //\\        ||      //||        //\\           //              ||             ||         //
---  || \\          // ||       //  \\       ||     // ||       //  \\         //               ||             ||       //
---  ||  \\        //  ||      //    \\      ||    //  ||      //    \\       ||                ||             ||    //
---  ||   \\      //   ||     //______\\     ||   //   ||     //______\\      ||      -_-_-_-   ||-_-_-_-_-_   || //
---  ||    \\    //    ||    //        \\    ||  //    ||    //        \\     ||           ||   ||             ||  \\ 
---  ||     \\  //     ||   //          \\   || //     ||   //          \\     \\          ||   ||             ||     \\
---  ||      \\//      ||  //            \\  ||//      ||  //            \\     \\-_-_-_-_-||   ||-_-_-_-_-_   ||        \\
---
---
---  ||-_-_-_-    ||           ||           ||               //-_-_-_-_-_-
---  ||     ||    ||           ||           ||              //
---  ||_-_-_||    ||           ||           ||             //
---  ||           ||           ||           ||             \\
---  ||           ||           \\           //              \\
---  ||           ||            \\         //               //
---  ||           ||-_-_-_-_     \\-_-_-_-//    -_-_-_-_-_-//
---
---By @ali_ghoghnoos
---@telemanager_ch
+end
