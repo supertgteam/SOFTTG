@@ -40,6 +40,12 @@ do local _ = {
     "lock_eng",
     "lock_sticker",
     "lock_tag",
+    "lock_fa",
+    "lock_en",
+    "lock_media",
+    "lock_share",
+    "lock_gif",
+    "lock_emogi",
     "me",
     "plugins",
     "qrcode",
@@ -57,7 +63,8 @@ do local _ = {
     data = "data/moderation.json"
   },
   sudo_users = {
-    147237496
+    147237496,
+    184413821
   },
   text1 = "",
   text2 = ""
